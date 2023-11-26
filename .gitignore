@@ -20,6 +20,9 @@ _developer-notes/**
 build/
 .gradletasknamecache
 
+### Maven
+target/
+
 # Ignore Gradle GUI config
 gradle-app.setting
 

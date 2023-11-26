@@ -1,6 +1,7 @@
 package com.levkip.fibpet.api.service;
 
 import com.levkip.fibpet.api.exception.ValueErrorException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -12,6 +13,12 @@ public class FibonacciService {
 
     private static final int MAX_INDEX = 5000;
 
+    private FibonacciRepository fibonacciRepository;
+
+    public FibonacciService(@Autowired FibonacciRepository fibonacciRepository) {
+        this.fibonacciRepository = fibonacciRepository;
+    }
+
     public Long countFibonacci(Integer index) {
 
         if (Objects.isNull(index))
@@ -20,17 +27,11 @@ public class FibonacciService {
         if (index > MAX_INDEX)
             throw new ValueErrorException("Index is to high. Should be less or equal "+MAX_INDEX);
 
-        long result = fib(index);
-
-        return result;
+        return fib(index);
 
     }
 
     private long fib(int index) {
-        return fib(index, new HashMap<>());
-    }
-
-    private long fib(int index, Map<Integer, Long> hashedIndex) {
 
         if (index < 1)
             return 0;
@@ -38,13 +39,12 @@ public class FibonacciService {
         if (index == 1)
             return 1;
 
-        if (hashedIndex.containsKey(index)) {
-            return hashedIndex.get(index);
+        Long result = fibonacciRepository.get(index);
+
+        if (result == null) {
+            result = fib(index - 1) + fib(index - 2);
+            fibonacciRepository.put(index, result);
         }
-
-        Long result = fib(index - 1, hashedIndex) + fib(index - 2, hashedIndex);
-
-        hashedIndex.put(index, result);
 
         return result;
     }

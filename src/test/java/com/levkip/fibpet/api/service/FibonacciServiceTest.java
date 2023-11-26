@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FibonacciServiceTest {
 
-    @Mock
     private FibonacciService fibonacciService;
+
 
     @BeforeEach
     public void setup() {
-        fibonacciService = new FibonacciService();
+        fibonacciService = new FibonacciService(new FibonacciRepository());
     }
 
     @Test

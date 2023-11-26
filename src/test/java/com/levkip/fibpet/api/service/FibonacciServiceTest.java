@@ -1,10 +1,9 @@
 package com.levkip.fibpet.api.service;
 
 import com.levkip.fibpet.api.exception.ValueErrorException;
+import com.levkip.fibpet.api.repository.FibonacciRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
 

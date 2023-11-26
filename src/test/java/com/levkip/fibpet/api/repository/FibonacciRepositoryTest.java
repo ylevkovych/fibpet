@@ -1,6 +1,6 @@
-package com.levkip.fibpet.api.service;
+package com.levkip.fibpet.api.repository;
 
-import org.junit.jupiter.api.Assertions;
+import com.levkip.fibpet.api.repository.FibonacciRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

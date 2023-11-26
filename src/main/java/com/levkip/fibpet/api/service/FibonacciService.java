@@ -1,11 +1,10 @@
 package com.levkip.fibpet.api.service;
 
 import com.levkip.fibpet.api.exception.ValueErrorException;
+import com.levkip.fibpet.api.repository.FibonacciRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Service

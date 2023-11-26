@@ -1,4 +1,4 @@
-package com.levkip.fibpet.api.service;
+package com.levkip.fibpet.api.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;

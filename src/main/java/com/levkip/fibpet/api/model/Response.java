@@ -1,11 +1,11 @@
 package com.levkip.fibpet.api.model;
 
-public class Response {
+public class Response<T> {
 
     private boolean success = true;
-    private Object data;
+    private T data;
 
-    public Response(boolean status, Object data) {
+    public Response(boolean status, T data) {
         this.success = status;
         this.data = data;
     }
@@ -18,11 +18,11 @@ public class Response {
         this.success = success;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

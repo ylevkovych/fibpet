@@ -1,7 +1,12 @@
 services:
   redis-server:
     image: 'redis:latest'
+  nginx:
+    build: 
+        dockerfile: Dockerfile
+        context: ./nginx
+    restart: always
+    ports:
+        - '5001:80' 
   fibpet:
     build: .
-    ports:
-      - "8080:8080"

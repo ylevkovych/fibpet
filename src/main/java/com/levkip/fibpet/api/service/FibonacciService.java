@@ -7,6 +7,7 @@ import com.levkip.fibpet.api.repository.FibonacciRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -28,13 +29,10 @@ public class FibonacciService {
 
     public Long countFibonacci(Integer index) {
 
-    	Map<Integer, Long> exist = fibonacciRepository.getOne(index);
+    	Map<String, Object> exist = fibonacciRepository.getOne(index);
 
-    	if (exist.get(index) != null) {
-    		return exist.get(index);
-    	}
-    	
-        return countAndSave(index);
+    	return exist.get("value") != null 
+    			? (Long) exist.get("value") : countAndSave(index);
 
     }
 
@@ -75,5 +73,9 @@ public class FibonacciService {
 
         return result;
     }
+
+	public List<Map<String, Object>> getSavedFibonacciValues(){
+		return fibonacciRepository.get();
+	}
 
 }

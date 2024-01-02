@@ -2,6 +2,10 @@ package com.levkip.fibpet.api.controller;
 
 import com.levkip.fibpet.api.model.Response;
 import com.levkip.fibpet.api.service.FibonacciService;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,15 @@ public class FibonacciController {
                 new Response<Long>(true, fibonacciService.countFibonacci(index)),
                 HttpStatus.OK);
 
+    }
+    
+    @GetMapping("api/v1.0/fibonacci")
+    public ResponseEntity<Response<List<Map<String, Object>>>> getSavedFibonacciValues() {
+    	
+    	return new ResponseEntity<>(
+    			new Response<List<Map<String, Object>>>(true, fibonacciService.getSavedFibonacciValues()),
+    			HttpStatus.OK);
+    	
     }
 
 

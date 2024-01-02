@@ -3,6 +3,8 @@ package com.levkip.fibpet.api.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,43 +28,49 @@ public class FibonacciRepository
 		jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS fibonacci (`index` int NOT NULL, `value` bigint NOT NULL, PRIMARY KEY (`index`))");
 	}
 	
-	public List<Map<Integer, Long>> get() {
-		String sql = "SELECT * FROM fibonacci WHERE `index`= ?";
+	public List<Map<String, Object>> get() {
+		String sql = "SELECT * FROM fibonacci";
+		
 		try {
-    		return jdbcTemplate.query(sql, new ResultSetExtractor<List<Map<Integer, Long>>>(){
+    		List<Map<String, Object>> res = jdbcTemplate.query(sql, new ResultSetExtractor<List<Map<String, Object>>>(){
     
     			@Override
-    			public List<Map<Integer, Long>> extractData(ResultSet rs) throws SQLException, DataAccessException
+    			public List<Map<String, Object>> extractData(ResultSet rs) throws SQLException, DataAccessException
     			{
-    				List<Map<Integer, Long>> result = new ArrayList<>();
+    				List<Map<String, Object>> result = new ArrayList<>();
     				while (rs.next()) {
-    					Map<Integer, Long> map = new HashMap<>();
-    					map.put(rs.getInt("index"), rs.getLong("value"));
+    					Map<String, Object> map = new HashMap<>();
+    					map.put("index",rs.getInt("index"));
+    					map.put("value", rs.getLong("value"));
+    					result.add(map);
     				}
     				return result;
     			}}
     		);
+    		
+    		return res;
 		} catch (EmptyResultDataAccessException e) {
 			// ignore
 		} catch (DataAccessException e) {
-			System.err.println(e.getLocalizedMessage());
+			System.out.println(e.getLocalizedMessage());
 		}
 		
-		return null;
+		return Collections.emptyList();
 	}
 	
-	public Map<Integer, Long> getOne(Integer index) {
+	public Map<String, Object> getOne(Integer index) {
 		
 		String sql = "SELECT * FROM fibonacci WHERE `index`=? LIMIT 0,1";
 		try {
-    		return jdbcTemplate.query(sql, new ResultSetExtractor<Map<Integer, Long>>(){
+    		return jdbcTemplate.query(sql, new ResultSetExtractor<Map<String, Object>>(){
     
     			@Override
-    			public Map<Integer, Long> extractData(ResultSet rs) throws SQLException, DataAccessException
+    			public Map<String, Object> extractData(ResultSet rs) throws SQLException, DataAccessException
     			{
-    				Map<Integer, Long> result = new HashMap<>();
+    				Map<String, Object> result = new HashMap<>();
     				if (rs.next()) {
-    					result.put(rs.getInt("index"), rs.getLong("value"));
+    					result.put("index",rs.getInt("index"));
+    					result.put("value", rs.getLong("value"));
     				}
     				return result;
     			}}
@@ -79,10 +87,10 @@ public class FibonacciRepository
 	
 	public boolean save(Integer index, Long value) {
 		
-		String sql = "INSERT INTO fibonacci (`index`, `value`) values (?, ?) ON DUPLICATE KEY UPDATE `value`=?";
-		
+		String sql = "INSERT INTO fibonacci VALUES (?, ?)";
+
 		try {
-			jdbcTemplate.update(sql, index, value, value);
+			jdbcTemplate.update(sql, index, value);
 			return true;
 		} catch (DataAccessException e) {
 			System.out.println(e.getLocalizedMessage());

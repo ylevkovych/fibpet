@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+<body>
+    <div id="app" style="width: 50%; padding: 10px; margin: auto">
+        <div>
+            <input id="num"/>
+            <button v-on:click="countFibonacci">Count</button>
+        </div>
+        
+        <div v-for="d in data" style="padding: 5px;">
+	        <b>{{ d.index }} : {{ d.result }}</b><br/> 
+	        counted on {{ d.date.toDateString() }}
+        </div>
+    </div>
+    
+    <script src="./main.js"></script>
+    
+    <script>
+        const mountedApp = app.mount("#app")
+    </script>
+    
+</body>
+</html>

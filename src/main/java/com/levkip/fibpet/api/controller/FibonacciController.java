@@ -15,7 +15,7 @@ public class FibonacciController {
     @Autowired
     private FibonacciService fibonacciService;
 
-    @GetMapping("rest/api/v1.0/fibonacci/{index}")
+    @GetMapping("api/v1.0/fibonacci/{index}")
     public ResponseEntity<Response<Long>> countFibonacci(@PathVariable Integer index) {
 
         return new ResponseEntity<>(

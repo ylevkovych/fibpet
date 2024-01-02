@@ -1,12 +1,33 @@
 services:
   redis-server:
     image: 'redis:latest'
+  mysql-server:
+    image: mysql
+    restart: always
+    environment:
+        MYSQL_DATABASE: fibpetdb
+        MYSQL_USER: fibpet
+        MYSQL_ROOT_PASSWORD: sup3ru53r
+        MYSQL_PASSWORD: f1bp3t
+  fibpet-server:
+    build: .
+    environment:
+        MYSQL_DATABASE: fibpetdb
+        MYSQL_USER: fibpet
+        MYSQL_ROOT_PASSWORD: sup3ru53r
+        MYSQL_PASSWORD: f1bp3t
+        MYSQL_DRIVER: com.mysql.jdbc.Driver
+        MYSQL_SERVER: mysql-server
+        MYSQL_PORT: 3306
+        REDIS_SERVER: redis-server
+  fibpet-client:
+    build:
+        dockerfile: Dockerfile
+        context: ./client
   nginx:
     build: 
         dockerfile: Dockerfile
         context: ./nginx
     restart: always
     ports:
-        - '5001:80' 
-  fibpet:
-    build: .
+        - '5001:80'

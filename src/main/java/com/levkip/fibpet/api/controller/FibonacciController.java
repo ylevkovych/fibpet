@@ -1,10 +1,6 @@
 package com.levkip.fibpet.api.controller;
 
-import com.levkip.fibpet.api.model.Response;
-import com.levkip.fibpet.api.service.FibonacciService;
-
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.levkip.fibpet.api.model.Fib;
+import com.levkip.fibpet.api.model.Response;
+import com.levkip.fibpet.api.service.FibonacciService;
 
 @RestController
 public class FibonacciController {
@@ -29,10 +29,10 @@ public class FibonacciController {
     }
     
     @GetMapping("api/v1.0/fibonacci")
-    public ResponseEntity<Response<List<Map<String, Object>>>> getSavedFibonacciValues() {
+    public ResponseEntity<Response<List<Fib>>> getSavedFibonacciValues() {
     	
     	return new ResponseEntity<>(
-    			new Response<List<Map<String, Object>>>(true, fibonacciService.getSavedFibonacciValues()),
+    			new Response<List<Fib>>(true, fibonacciService.getSavedFibonacciValues()),
     			HttpStatus.OK);
     	
     }

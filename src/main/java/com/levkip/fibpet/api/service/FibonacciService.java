@@ -1,6 +1,7 @@
 package com.levkip.fibpet.api.service;
 
 import com.levkip.fibpet.api.exception.ValueErrorException;
+import com.levkip.fibpet.api.model.Fib;
 import com.levkip.fibpet.api.repository.FibonacciCacheRepository;
 import com.levkip.fibpet.api.repository.FibonacciRepository;
 
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -29,13 +29,16 @@ public class FibonacciService {
 
     public Long countFibonacci(Integer index) {
 
-    	Map<String, Object> exist = fibonacciRepository.getOne(index);
-
-    	return exist.get("value") != null 
-    			? (Long) exist.get("value") : countAndSave(index);
+    	Fib fib = fibonacciRepository.getOne(index);
+    	
+    	return fib != null ? fib.getValue() : countAndSave(index);
 
     }
 
+    public List<Fib> getSavedFibonacciValues(){
+    	return fibonacciRepository.get();
+    }
+    
 	private Long countAndSave(Integer index)
 	{
 		validateIndex(index);
@@ -73,9 +76,5 @@ public class FibonacciService {
 
         return result;
     }
-
-	public List<Map<String, Object>> getSavedFibonacciValues(){
-		return fibonacciRepository.get();
-	}
 
 }

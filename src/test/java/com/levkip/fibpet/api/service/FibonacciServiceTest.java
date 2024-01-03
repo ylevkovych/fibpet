@@ -1,17 +1,24 @@
 package com.levkip.fibpet.api.service;
 
 import com.levkip.fibpet.api.exception.ValueErrorException;
+import com.levkip.fibpet.api.model.Fib;
 import com.levkip.fibpet.api.repository.FibonacciCacheRepository;
 import com.levkip.fibpet.api.repository.FibonacciRepository;
 
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.ResultSetExtractor;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class FibonacciServiceTest {
@@ -25,7 +32,7 @@ class FibonacciServiceTest {
     @Mock
     private FibonacciCacheRepository fibonacciCacheRepository;
 
-//    @Test
+    @Test
     public void countFibonacci_IndexIsNotSet() {
 
         ValueErrorException e = assertThrows(ValueErrorException.class, () -> {
@@ -35,7 +42,7 @@ class FibonacciServiceTest {
         assertTrue("Index is not set.".equals(e.getLocalizedMessage()));
     }
 
-//    @Test
+    @Test
     public void countFibonacci_IndexIsTooHigh() {
 
         ValueErrorException e = assertThrows(ValueErrorException.class, () -> {
@@ -46,7 +53,7 @@ class FibonacciServiceTest {
 
     }
 
-//    @Test
+    @Test
     public void countFibonacci() {
 
         Mockito.when(fibonacciCacheRepository.get(7)).thenReturn(13L);
@@ -58,7 +65,21 @@ class FibonacciServiceTest {
         assertEquals(fibonacciService.countFibonacci(11), 89);
         assertEquals(fibonacciService.countFibonacci(27), 196418);
         assertEquals(fibonacciService.countFibonacci(41), 165580141);
-
+    }
+    
+    @Test
+    public void getSavedFibonacciValues( ) {
+    	
+    	Fib fib1 = new Fib(7,13L);
+    	Fib fib2 = new Fib(11,89L);
+    	
+    	List<Fib> fibs = Arrays.asList(fib1, fib2);
+    	
+    	Mockito.when(fibonacciRepository.get()).thenReturn(fibs);
+    	
+    	List<Fib> result = fibonacciService.getSavedFibonacciValues();
+    	
+    	assertEquals(result.size(), fibs.size());
     }
 
 }

@@ -26,7 +26,7 @@ import org.testcontainers.utility.DockerImageName;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-//@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class)
 class FibonacciCacheRepositoryTest {
 
     public static GenericContainer redis =
@@ -37,37 +37,37 @@ class FibonacciCacheRepositoryTest {
 
     private static RedisTemplate<String, Object> redisTemplate;
 
-//    @BeforeAll
+    @BeforeAll
     public static void setup() {
-//        redis.start();
-//
-//        JedisConnectionFactory cf = new JedisConnectionFactory();
-//
-//        if (cf.getStandaloneConfiguration() == null)
-//            throw new IllegalArgumentException("Wrong redis configuration.");
-//
-//        cf.getStandaloneConfiguration().setHostName(redis.getHost());
-//        cf.getStandaloneConfiguration().setPort(redis.getMappedPort(6379));
-//        cf.afterPropertiesSet();
-//
-//        redisTemplate = new RedisTemplate<>();
-//        redisTemplate.setConnectionFactory(cf);
-//        redisTemplate.afterPropertiesSet();
-//        fibonacciRepository = new FibonacciCacheRepository(redisTemplate);
+        redis.start();
+
+        JedisConnectionFactory cf = new JedisConnectionFactory();
+
+        if (cf.getStandaloneConfiguration() == null)
+            throw new IllegalArgumentException("Wrong redis configuration.");
+
+        cf.getStandaloneConfiguration().setHostName(redis.getHost());
+        cf.getStandaloneConfiguration().setPort(redis.getMappedPort(6379));
+        cf.afterPropertiesSet();
+
+        redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(cf);
+        redisTemplate.afterPropertiesSet();
+        fibonacciRepository = new FibonacciCacheRepository(redisTemplate);
     }
 
-//    @AfterAll
+    @AfterAll
     public static void tearDown() {
         redis.close();
     }
 
-//    @Test
+    @Test
     void get() {
         fibonacciRepository.put(1, 100L);
         assertEquals(100L, fibonacciRepository.get(1));
     }
 
-//    @Test
+    @Test
     void put() {
         fibonacciRepository.put(3, 300L);
         assertEquals(300L, fibonacciRepository.get(3));

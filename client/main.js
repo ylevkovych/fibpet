@@ -56,7 +56,32 @@ const app = Vue.createApp({
             } catch (error) {
                 alert("Error: ", error);
             }
+        },
+        async deleteFibonacciValue(index) {
+
+            try {
+                const response = await fetch("http://localhost:5001/rest/api/v1.0/fibonacci/"+index, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success == true) {
+                    this.getFibonacciValues();
+                } else {
+                    alert(result.data);
+                }
+
+            } catch (error) {
+                alert("Error: ", error);
+            }
         }
+    },
+    mounted() {
+        this.getFibonacciValues();
     }
 
 })

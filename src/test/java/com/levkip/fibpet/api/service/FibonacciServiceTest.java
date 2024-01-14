@@ -1,24 +1,24 @@
 package com.levkip.fibpet.api.service;
 
-import com.levkip.fibpet.api.exception.ValueErrorException;
-import com.levkip.fibpet.api.model.Fib;
-import com.levkip.fibpet.api.repository.FibonacciCacheRepository;
-import com.levkip.fibpet.api.repository.FibonacciRepository;
+import static org.hamcrest.CoreMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.apache.tomcat.util.digester.ArrayStack;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.jdbc.core.ResultSetExtractor;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.levkip.fibpet.api.exception.ValueErrorException;
+import com.levkip.fibpet.api.model.Fib;
+import com.levkip.fibpet.api.repository.FibonacciCacheRepository;
+import com.levkip.fibpet.api.repository.FibonacciRepository;
 
 @ExtendWith(MockitoExtension.class)
 class FibonacciServiceTest {
@@ -80,6 +80,31 @@ class FibonacciServiceTest {
     	List<Fib> result = fibonacciService.getSavedFibonacciValues();
     	
     	assertEquals(result.size(), fibs.size());
+    }
+    
+    @Test
+    public void deleteSavedFibonacciValue( ) {
+    	final Integer index = 7;
+    	Fib fib1 = new Fib(index,13L);
+    	
+    	Mockito.when(fibonacciRepository.getOne(index)).thenReturn(fib1);
+    	Mockito.when(fibonacciRepository.delete(index)).thenReturn(true);
+
+        assertTrue(fibonacciService.deleteSavedFibonacciValue(index));
+    }
+    
+    @Test
+    public void deleteSavedFibonacciValue_NotFound( ) {
+    	final Integer index = 7;
+    	
+    	Mockito.when(fibonacciRepository.getOne(index)).thenReturn(null);
+    	
+        ValueErrorException e = assertThrows(ValueErrorException.class, () -> {
+        	fibonacciService.deleteSavedFibonacciValue(index);
+        });
+
+        assertTrue(e.getLocalizedMessage().startsWith("Fibonacci value by index ["+index+"] not found."));
+    	
     }
 
 }

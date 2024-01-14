@@ -4,6 +4,7 @@ import com.levkip.fibpet.api.exception.ValueErrorException;
 import com.levkip.fibpet.api.model.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.objenesis.instantiator.basic.NewInstanceInstantiator;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,4 +20,10 @@ public class ExceptionHandlerController {
 
     }
 
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<Response<String>> handleException(Exception e) {
+    	
+    	return new ResponseEntity<>(new Response<>(false, "Error occured. Please contact admininstrator for details."), HttpStatus.INTERNAL_SERVER_ERROR);
+    	
+    }
 }
